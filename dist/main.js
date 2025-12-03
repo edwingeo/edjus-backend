@@ -1,19 +1,23 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const common_1 = require("@nestjs/common");
+exports.handler = void 0;
 const core_1 = require("@nestjs/core");
-const config_1 = require("@nestjs/config");
 const app_module_1 = require("./app.module");
-async function bootstrap() {
-    const app = await core_1.NestFactory.create(app_module_1.AppModule);
-    app.setGlobalPrefix('api');
-    app.useGlobalPipes(new common_1.ValidationPipe({
-        whitelist: true,
-        forbidNonWhitelisted: true,
-        transform: true,
-    }));
-    const configService = app.get(config_1.ConfigService);
-    const port = configService.get('PORT') || 3000;
-    await app.listen(port);
+let server;
+const handler = async (req, res) => {
+    if (!server) {
+        const app = await core_1.NestFactory.create(app_module_1.AppModule);
+        await app.init();
+        server = app.getHttpAdapter().getInstance();
+    }
+    return server(req, res);
+};
+exports.handler = handler;
+if (require.main === module) {
+    async function bootstrap() {
+        const app = await core_1.NestFactory.create(app_module_1.AppModule);
+        await app.listen(process.env.PORT || 3000);
+        console.log(`Application is running on: ${await app.getUrl()}`);
+    }
+    bootstrap();
 }
-bootstrap();

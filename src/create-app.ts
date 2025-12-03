@@ -6,7 +6,9 @@ import { AppModule } from './app.module';
 export async function createApp(
   adapter?: ExpressAdapter,
 ): Promise<NestExpressApplication> {
-  const app = await NestFactory.create<NestExpressApplication>(AppModule, adapter);
+  const app = adapter
+    ? await NestFactory.create<NestExpressApplication>(AppModule, adapter)
+    : await NestFactory.create<NestExpressApplication>(AppModule);
 
   app.setGlobalPrefix('api');
   app.useGlobalPipes(
