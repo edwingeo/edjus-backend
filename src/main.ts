@@ -10,7 +10,7 @@ export const handler = async (req: Request, res: Response) => {
     await app.init();
     server = app.getHttpAdapter().getInstance();
   }
-  return server(req, res);
+  return server(req, res, () => { });
 };
 
 if (require.main === module) {
