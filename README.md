@@ -15,13 +15,13 @@ NestJS service that uses PostgreSQL (via Prisma) for users, supports signup/logi
     - `DATABASE_SSL` (`true` to enable)
     - `DATABASE_URL` (preferred; e.g. `postgresql://user:pass@localhost:5432/edjus`)
 - Start in dev: `npm run start:dev`
-- Build: `npm run build`
+- Build: `npm run build` (runs `prisma generate` before compiling)
 - Start built bundle: `npm start`
 
 ## Vercel deployment
 - A serverless entry point lives at `api/[...vercel].ts` and reuses the Nest bootstrap so routes stay under `/api/*`.
 - Ensure required env vars are configured in the Vercel project (`PORT` is ignored there, but DB/JWT vars are required).
-- Install dependencies (including `@vercel/node`) during deployment and run `prisma generate` so the Prisma client is available.
+- Install dependencies (including `@vercel/node`) during deployment; the build script now runs `prisma generate` so the Prisma client is regenerated even with cached dependencies.
 - Local check: `vercel dev` will execute the catch-all function and forward `/api/*` to the Nest app.
 
 ## Prisma ORM
