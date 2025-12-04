@@ -1,11 +1,11 @@
 import { VercelRequest, VercelResponse } from '@vercel/node';
-import express, { RequestHandler } from 'express';
+import express, { Express } from 'express';
 import { ExpressAdapter } from '@nestjs/platform-express';
 import { createApp } from '../src/create-app';
 
-let cachedServer: RequestHandler | undefined;
+let cachedServer: Express | undefined;
 
-async function bootstrap(): Promise<RequestHandler> {
+async function bootstrap(): Promise<Express> {
   const expressInstance = express();
   const adapter = new ExpressAdapter(expressInstance);
   const app = await createApp(adapter);
