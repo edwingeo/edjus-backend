@@ -9,6 +9,7 @@ export function getCorsOrigins(): string[] {
       .map((origin) => origin.trim())
       .filter(Boolean) || [
       'https://edjus.onrender.com',
+      'https://www.edjus.ca',
       'http://localhost:3000',
     ]
   );
